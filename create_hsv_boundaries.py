@@ -1,5 +1,10 @@
 import cv2
 import numpy as np
+import argparse
+
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--image', type=str, help='image to process')
 
 '''
 	# GREEN HSV VALUES (10:45, 40:255, 10:255), (65:255, 255, 255)
@@ -9,7 +14,7 @@ import numpy as np
 def donothing(e):
 	pass
 
-def main():
+def process(image):
 
 	bars_window = np.zeros((40, 512, 3), dtype=np.uint8)
 	cv2.namedWindow('bars_image')
@@ -27,7 +32,7 @@ def main():
 
 	while True:
 
-		frame = cv2.imread('land.jpg')
+		frame = cv2.imread(image)
 		frame = cv2.resize(frame, (300, 300))
 
 		hsv_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
@@ -63,6 +68,12 @@ def main():
 		if cv2.waitKey(25) & 0xFF == ord('q'):
 			cv2.destroyAllWindows()
 			break
+
+def main():
+    args = parser.parse_args()
+    image = args.image
+    print(f'[INFO] Processing image: {image}')
+    process(image)
 
 if __name__ == '__main__':
 	main()
